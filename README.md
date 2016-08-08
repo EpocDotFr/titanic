@@ -39,6 +39,6 @@ Best usage is to create a CRON job that launch Titanic once a day (more is usele
 ## How it works
 
 This script use the [Firmapi](https://firmapi.com/) service to check if the specified business
-(`SIREN` parameter) is unlisted from the [RCS](https://fr.wikipedia.org/wiki/Registre_du_commerce_et_des_sociétés_(France)).
+(`SIREN` parameter) is unlisted from the [RCS](https://en.wikipedia.org/wiki/List_of_company_registers#France).
 If yes, emails are sent through SMTP (`SMTP_*` parameters) to the specified recipients (`SURVIVORS` parameter). A file
 is then created in the same directory (`{SIREN}.sank`) to prevent further useless calls to Firmapi.
