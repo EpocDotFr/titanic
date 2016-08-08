@@ -29,9 +29,16 @@ python run.py [--drill]
 
 `--drill` make the specified business randomly closed or not to test emails sending.
 
+Best usage is to create a CRON job that launch Titanic once a day (more is useless):
+
+```
+# Every day at 6PM
+0 18 * * * cd /path/to/titanic && python run.py 2>&1
+```
+
 ## How it works
 
 This script use the [Firmapi](https://firmapi.com/) service to check if the specified business
 (`SIREN` parameter) is unlisted from the [RCS](https://fr.wikipedia.org/wiki/Registre_du_commerce_et_des_sociétés_(France)).
 If yes, emails are sent through SMTP (`SMTP_*` parameters) to the specified recipients (`SURVIVORS` parameter). A file
-is then created (`{SIREN}.sank`) to prevent further useless calls to Firmapi.
+is then created in the same directory (`{SIREN}.sank`) to prevent further useless calls to Firmapi.
