@@ -5,17 +5,19 @@ import arrow
 import click
 import requests
 import os
+import logging
+import sys
 
 
 ENDPOINT = 'https://firmapi.com/api/v1/'
 
 
-def debug(message, err=False):
-    click.echo('{} - {} - {}'.format(
-        arrow.now(env('TIMEZONE')).format('MMM, D YYYY HH:mm:ss'),
-        'ERR ' if err else 'INFO',
-        message
-    ), err=err)
+def debug(message, err=False, terminate=False):
+    """Log a regular or error message to the standard output, optionally terminating the script."""
+    logging.getLogger().log(logging.ERROR if err else logging.INFO, message)
+
+    if terminate:
+        sys.exit(1)
 
 
 def get_titanic(drill=False):
@@ -38,6 +40,14 @@ def get_titanic(drill=False):
 @click.command()
 @click.option('--drill', is_flag=True, default=False, help='Test mode')
 def run(drill):
+    logging.basicConfig(
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%d/%m/%Y %H:%M:%S',
+        stream=sys.stdout
+    )
+
+    logging.getLogger().setLevel(logging.INFO)
+
     Env.read_envfile('.env')
 
     survivors = env('SURVIVORS', cast=list, subcast=str)
@@ -64,7 +74,7 @@ def run(drill):
         debug('Checking Titanic\'s status...')
 
         if titanic['radie']:
-            since = arrow.get(titanic['last_legal_update']).to(env('TIMEZONE')).format('MMM, D YYYY')
+            since = arrow.get(titanic['last_legal_update']).format('MMM, D YYYY')
 
             debug('Titanic sunk! {} isn\'t no more since {}!'.format(titanic['names']['best'], since))
             debug('There\'s {} survivors to contact.'.format(len(survivors)))

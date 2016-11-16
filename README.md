@@ -16,7 +16,6 @@ Copy the `.env.example` file to `.env` and fill in the configuration parameters.
 
 Available configuration parameters are:
 
-  - `TIMEZONE` Self-explanatory parameter
   - `SURVIVORS` A comma-separated list of emails that will receive the "Titanic sunk!" email
   - `SIREN` The [SIREN](https://en.wikipedia.org/wiki/SIREN_code) of the business to check for (no spaces)
   - `SMTP_*` Self-explanatory parameters
